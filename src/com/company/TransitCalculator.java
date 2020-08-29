@@ -4,36 +4,32 @@ package com.company;
 public class TransitCalculator {
     int numberOfDays;
     int expectedNumberOfRides;
-    String ticketName[] = {"Pay-per-ride","7-day Unlimited Rides", "30-day Unlimited Rides"};
-    double ticketCost[] = {2.75,33,127};
+    int age;
+    boolean disabilities = false;
+    String ticketName[] = {"Pay-per-ride", "7-day Unlimited Rides", "30-day Unlimited Rides"};
+    double ticketCost[] = {2.75, 33, 127};
+    double ticketReducedCost[] = {1.35, 16.50, 63.50};
 
 
-
-
-    public TransitCalculator(int numberOfDays, int expectedNumberOfRides) {
+    public TransitCalculator(int numberOfDays, int expectedNumberOfRides, int age, boolean disabilities) {
         this.numberOfDays = numberOfDays;
         this.expectedNumberOfRides = expectedNumberOfRides;
-    }
-
-    public double unlimited7Price(){
-        double totalCost;
-       /* if(numberOfDays%7!=0){
-            totalCost=(numberOfDays/7+1)*ticketCost[1];
-        } else {
-            totalCost=numberOfDays/7*ticketCost[1];
-        }
-        */
-        totalCost = Math.ceil((double)numberOfDays/7)*ticketCost[1];
-        return totalCost/expectedNumberOfRides;
+        this.age = age;
+        this.disabilities = disabilities;
     }
 
     public double[] getRidePrices(){
         double unlimited7PerRide, unlimited30PerRide;
-
-        unlimited30PerRide = Math.ceil((double)numberOfDays/30)*ticketCost[2]/expectedNumberOfRides;
-        unlimited7PerRide = unlimited7Price();
-
-        double perRideEachOption[] = {ticketCost[0],unlimited7PerRide,unlimited30PerRide};
+        double [] perRideEachOption;
+        if(age < 65 && disabilities == false) {
+            unlimited30PerRide = Math.ceil((double) numberOfDays / 30) * ticketCost[2] / expectedNumberOfRides;
+            unlimited7PerRide = Math.ceil((double) numberOfDays / 7) * ticketCost[1] / expectedNumberOfRides;
+            perRideEachOption = new double[]{ticketCost[0], unlimited7PerRide, unlimited30PerRide};
+        } else{
+            unlimited30PerRide = Math.ceil((double) numberOfDays / 30) * ticketReducedCost[2] / expectedNumberOfRides;
+            unlimited7PerRide = Math.ceil((double) numberOfDays / 7) * ticketReducedCost[1] / expectedNumberOfRides;
+            perRideEachOption = new double[]{ticketReducedCost[0], unlimited7PerRide, unlimited30PerRide};
+        }
         return perRideEachOption;
     }
 
